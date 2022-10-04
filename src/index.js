@@ -40,11 +40,8 @@ app.get('/talker/:id', async (req, res) => {
 
 // Req 3
 app.post('/login', (req, res) => {
-const dados = req.body;
-// console.log('oi');
-
 const a = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'.split('');
-const b = [];  
+const b = [];
 for (let i = 0; i < 16; i += 1) {
     const j = (Math.random() * (a.length - 1)).toFixed(0);
     b[i] = a[j];
@@ -52,3 +49,5 @@ for (let i = 0; i < 16; i += 1) {
 const token = b.join('');
 res.status(200).json({ token });
 });
+
+// Req4
