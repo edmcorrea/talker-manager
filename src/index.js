@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs').promises;
 const path = require('path');
+const { validationEmail, validationPassword } = require('./middlewares/validationsLogin');
 
 const app = express();
 app.use(bodyParser.json());
@@ -38,8 +39,8 @@ app.get('/talker/:id', async (req, res) => {
   }
 });
 
-// Req 3
-app.post('/login', (_req, res) => {
+// Req 3 and Req 4
+app.post('/login', validationEmail, validationPassword, (_req, res) => {
 const a = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'.split('');
 const b = [];
 for (let i = 0; i < 16; i += 1) {
@@ -50,5 +51,3 @@ const token = b.join('');
 
 res.status(200).json({ token });
 });
-
-// Req4
