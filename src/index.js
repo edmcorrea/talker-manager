@@ -3,7 +3,8 @@ const bodyParser = require('body-parser');
 const fs = require('fs').promises;
 const path = require('path');
 const { validationEmail, validationPassword } = require('./middlewares/validationsLogin');
-const { validationAutentication, validationName, validateAge, validateTalk, validateWatchedAt, validateRate } = require('./middlewares/validationsTalker');
+const { validationAutentication,
+  validationName, validateAge, validateTalk, validateWatchedAt, validateRate } = require('./middlewares/validationsTalker');
 
 const app = express();
 app.use(bodyParser.json());
@@ -24,7 +25,7 @@ app.listen(PORT, () => {
 
 // Req 1
 app.get('/talker', async (_req, res) => {
-  const talker = JSON.parse(await fs.readFile(pathTalker, 'utf8')) || [];
+  const talker = JSON.parse(await fs.readFile(pathTalker, 'utf8'));
   res.status(200).json(talker);
 });
 
@@ -64,8 +65,27 @@ validateAge,
 validateTalk,
 validateWatchedAt,
 validateRate,
-(req, res) => {
+async (req, res) => {
+  const talkers = JSON.parse(await fs.readFile(pathTalker, 'utf8'));
   const newSpeakerPerson = req.body;
-  console.log(newSpeakerPerson);
-  res.status(201).json(newSpeakerPerson);
+  const id = talkers.length + 1;
+  talkers.push({ id, ...newSpeakerPerson });
+  await fs.writeFile(pathTalker, JSON.stringify(talkers));
+  res.status(201).json({ id, ...newSpeakerPerson });
+});
+
+// Req 6
+app.put('/talker/:id',
+validationAutentication,
+validationName,
+validateAge,
+validateTalk,
+validateWatchedAt,
+validateRate,
+async (req, res) => {
+  const talkers = JSON.parse(await fs.readFile(pathTalker, 'utf8'));
+  const person = req.body;
+  const { name, age, talk, talk: { watchedAt, rate } } = req.body;
+  console.log(person);
+  res.status(200).json(talker);
 });
