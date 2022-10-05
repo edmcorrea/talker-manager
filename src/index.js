@@ -39,14 +39,15 @@ app.get('/talker/:id', async (req, res) => {
 });
 
 // Req 3
-app.post('/login', (req, res) => {
+app.post('/login', (_req, res) => {
 const a = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'.split('');
 const b = [];
 for (let i = 0; i < 16; i += 1) {
-    const j = (Math.random() * (a.length - 1)).toFixed(0);
-    b[i] = a[j];
+  const sOrt = (Math.random() * (a.length - 1)).toFixed(0);
+  b[i] = a[sOrt];
 }
 const token = b.join('');
+
 res.status(200).json({ token });
 });
 
