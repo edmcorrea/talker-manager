@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs').promises;
 const path = require('path');
 const { validationEmail, validationPassword } = require('./middlewares/validationsLogin');
+const { validationAutentication, validationName, validateAge, validateTalk, validateWatchedAt, validateRate } = require('./middlewares/validationsTalker');
 
 const app = express();
 app.use(bodyParser.json());
@@ -40,7 +41,10 @@ app.get('/talker/:id', async (req, res) => {
 });
 
 // Req 3 and Req 4
-app.post('/login', validationEmail, validationPassword, (_req, res) => {
+app.post('/login',
+validationEmail,
+validationPassword,
+(_req, res) => {
 const a = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'.split('');
 const b = [];
 for (let i = 0; i < 16; i += 1) {
@@ -50,4 +54,18 @@ for (let i = 0; i < 16; i += 1) {
 const token = b.join('');
 
 res.status(200).json({ token });
+});
+
+// Req 5
+app.post('/talker',
+validationAutentication,
+validationName,
+validateAge,
+validateTalk,
+validateWatchedAt,
+validateRate,
+(req, res) => {
+  const newSpeakerPerson = req.body;
+  console.log(newSpeakerPerson);
+  res.status(201).json(newSpeakerPerson);
 });
