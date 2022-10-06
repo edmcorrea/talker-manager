@@ -93,7 +93,15 @@ async (req, res) => {
   const removeTalker = talkers.filter((elem) => elem.id !== Number(id));
   person.id = Number(id);
   removeTalker.push(person);
-  console.log(person);
   await fs.writeFile(pathTalker, JSON.stringify(removeTalker));
   res.status(200).json(person);
+});
+
+// Req 7
+app.delete('/talker/:id', validationAutentication, async (req, res) => {
+  const { id } = req.params;
+  const talkers = JSON.parse(await fs.readFile(pathTalker, 'utf8'));
+  const removeTalker = talkers.filter((elem) => elem.id !== Number(id));
+  await fs.writeFile(pathTalker, JSON.stringify(removeTalker));
+  res.status(204).end();
 });
