@@ -4,7 +4,11 @@ const fs = require('fs').promises;
 const path = require('path');
 const { validationEmail, validationPassword } = require('./middlewares/validationsLogin');
 const { validationAutentication,
-  validationName, validateAge, validateTalk, validateWatchedAt, validateRate } = require('./middlewares/validationsTalker');
+  validationName,
+  validateAge,
+  validateTalk,
+  validateWatchedAt,
+  validateRate } = require('./middlewares/validationsTalker');
 
 const app = express();
 app.use(bodyParser.json());
@@ -86,12 +90,10 @@ async (req, res) => {
   const { id } = req.params;
   const person = req.body;
   const talkers = JSON.parse(await fs.readFile(pathTalker, 'utf8'));
-  const filterTalkers = talkers.filter((elem) => elem.id !== Number(id));
-  filterTalkers.push(person);
-  await fs.writeFile(pathTalker, JSON.stringify(filterTalkers));
-  // person.talk.watchedAt = findTalker.talk.watchedAt;
-  // person.talk.rate = findTalker.talk.rate;
+  const removeTalker = talkers.filter((elem) => elem.id !== Number(id));
+  person.id = Number(id);
+  removeTalker.push(person);
+  console.log(person);
+  await fs.writeFile(pathTalker, JSON.stringify(removeTalker));
   res.status(200).json(person);
-  
-  // res.end();
 });
