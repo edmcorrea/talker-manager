@@ -30,7 +30,19 @@ app.listen(PORT, () => {
 // Req 1
 app.get('/talker', async (_req, res) => {
   const talker = JSON.parse(await fs.readFile(pathTalker, 'utf8'));
+  console.log(talker);
   res.status(200).json(talker);
+});
+
+// Req 8
+app.get('/talker/search', validationAutentication, async (req, res) => {
+  const { q } = req.query;
+  console.log(q);
+  const searchedTerm = (q);
+  console.log(searchedTerm);
+  const talkers = JSON.parse(await fs.readFile(pathTalker, 'utf8'));
+  const filterResult = talkers.filter(({ name }) => name.includes(searchedTerm));
+  res.status(200).json(filterResult);
 });
 
 // Req 2
@@ -44,6 +56,7 @@ app.get('/talker/:id', async (req, res) => {
     res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
   }
 });
+
 
 // Req 3 and Req 4
 app.post('/login',
