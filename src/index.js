@@ -55,7 +55,7 @@ for (let i = 0; i < 16; i += 1) {
 const token = b.join('');
 
 res.status(200).json({ token });
-});
+});//
 
 // Req 5
 app.post('/talker',
@@ -83,9 +83,15 @@ validateTalk,
 validateWatchedAt,
 validateRate,
 async (req, res) => {
-  const talkers = JSON.parse(await fs.readFile(pathTalker, 'utf8'));
+  const { id } = req.params;
   const person = req.body;
-  const { name, age, talk, talk: { watchedAt, rate } } = req.body;
-  console.log(person);
-  res.status(200).json(talker);
+  const talkers = JSON.parse(await fs.readFile(pathTalker, 'utf8'));
+  const filterTalkers = talkers.filter((elem) => elem.id !== Number(id));
+  filterTalkers.push(person);
+  await fs.writeFile(pathTalker, JSON.stringify(filterTalkers));
+  // person.talk.watchedAt = findTalker.talk.watchedAt;
+  // person.talk.rate = findTalker.talk.rate;
+  res.status(200).json(person);
+  
+  // res.end();
 });

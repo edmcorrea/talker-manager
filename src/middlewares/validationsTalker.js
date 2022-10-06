@@ -43,8 +43,7 @@ const validateAge = (req, res, next) => {
 
 const validateTalk = (req, res, next) => {
   const { talk } = req.body;
-  console.log(talk);
-  // validationRequiredField(talk, res, 'talk');
+    // validationRequiredField(talk, res, 'talk');
   if (!talk) {
     return res.status(400).json({ message: 'O campo "talk" é obrigatório' });
   }
@@ -58,7 +57,6 @@ const validateWatchedAt = (req, res, next) => {
   if (!watchedAt) {
     return res.status(400).json({ message: 'O campo "watchedAt" é obrigatório' });
   }
-  console.log(isFormatDate.test(watchedAt));
   if (!isFormatDate.test(watchedAt)) {
     return res.status(400).json({ message: 'O campo "watchedAt" deve ter o formato "dd/mm/aaaa"' });
   }
@@ -68,7 +66,7 @@ const validateWatchedAt = (req, res, next) => {
 const validateRate = (req, res, next) => {
   const { rate } = req.body.talk;
   // validationRequiredField(rate, res, 'rate');
-  if (!rate) {
+  if (rate === undefined) {
     return res.status(400).json({ message: 'O campo "rate" é obrigatório' });
   }
   const limiteRate = [1, 2, 3, 4, 5];
