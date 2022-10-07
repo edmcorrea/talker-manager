@@ -54,7 +54,6 @@ app.get('/talker/:id', async (req, res) => {
   }
 });
 
-
 // Req 3 and Req 4
 app.post('/login',
 validationEmail,
